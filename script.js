@@ -1,4 +1,4 @@
-// --- Función para pedir datos a la API ---
+// --- Función para pedir datos a la API con proxy ---
 async function fetchEventData(eventId) {
   const query = `
     query event($id: ID!) {
@@ -19,8 +19,11 @@ async function fetchEventData(eventId) {
 
   const variables = { id: eventId };
 
+  const url = "https://liveheats.com/api/graphql";
+  const proxy = "https://corsproxy.io/?"; // Proxy que añade CORS
+
   try {
-    const response = await fetch("https://liveheats.com/api/graphql", {
+    const response = await fetch(proxy + encodeURIComponent(url), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -44,7 +47,6 @@ async function fetchEventData(eventId) {
 
 // --- Llamamos a la API con el id 28328 ---
 fetchEventData("28328");
-
 
 // --- Lógica de color (de antes) ---
 document.getElementById("applyColor").addEventListener("click", () => {
